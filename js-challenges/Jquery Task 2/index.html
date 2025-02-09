@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <style>
+        .image-slider {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .image-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slider-controls button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: brown;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .slider-controls button.next {
+            right: 0;
+        }
+
+        .slider-controls button.prev {
+            left: 0;
+        }
+
+        .fade-controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fade-controls">
+        <button class="fade-in">Fade In</button>
+        <button class="fade-out">Fade Out</button>
+    </div>
+
+    <div class="image-slider">
+        <img src="OIP (1).jpeg" alt="Slider image">
+        <div class="slider-controls">
+            <button class="next">Next</button>
+            <button class="prev">Prev</button>
+        </div>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            const ImageSlider = {
+                images: ["OIP (1).jpeg", "OIP.jpeg", "oip1.webp", "R.jpeg"],
+                currentIndex: 0,
+
+                init: function () {
+                    this.preloadImages();
+                    this.bindEvents();
+                },
+
+                preloadImages: function () {
+                    this.images.forEach(src => {
+                        const img = new Image();
+                        img.src = src;
+                    });
+                },
+
+                bindEvents: function () {
+                    $('.next').on('click', () => this.showNextImage());
+                    $('.prev').on('click', () => this.showPrevImage());
+                    $('.fade-in').on('click', () => this.fadeInSlider());
+                    $('.fade-out').on('click', () => this.fadeOutSlider());
+                },
+
+                showNextImage: function () {
+                    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                    this.updateImage();
+                },
+
+                showPrevImage: function () {
+                    this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+                    this.updateImage();
+                },
+
+                updateImage: function () {
+                    $('.image-slider img')
+                        .fadeOut(200)
+                        .attr('src', this.images[this.currentIndex])
+                        .fadeIn(200);
+                },
+
+                fadeInSlider: function () {
+                    $('.image-slider').fadeIn(1000);
+                },
+
+                fadeOutSlider: function () {
+                    $('.image-slider').fadeOut(1000);
+                }
+            };
+
+            // Initialize the slider
+            ImageSlider.init();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        .welcome-message {
+            text-align: center;
+            color: #333;
+            margin: 20px;
+        }
+        .button-container {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcomeMessage" class="welcome-message"></div>
+    <div class="button-container">
+        <button id="openButton">Open page 3</button>
+        <button id="closeButton">Close page 3</button>
+    </div>
+    <!-- <script src="main.js"></script> -->
+     <script>
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const urlParams = new URLSearchParams(window.location.search);
+        const fullName = urlParams.get('fullName');
+        welcomeMessage.innerHTML = `Welcome, ${fullName}!`;
+
+        let newWindow = null; 
+
+        const openButton = document.getElementById('openButton');
+        const closeButton = document.getElementById('closeButton');
+
+        openButton.addEventListener('click', () => {
+
+            newWindow = window.open('index3.html', '_blank', 'width=500,height=400');
+        });
+
+        closeButton.addEventListener('click', () => {
+
+            if (newWindow && !newWindow.closed) {
+
+                newWindow.close();
+                newWindow = null;
+            }
+        });
+    </script>
+
+</body>
+</html>

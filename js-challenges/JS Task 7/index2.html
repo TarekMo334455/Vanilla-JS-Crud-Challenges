@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .cookie-display {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .cookie-item {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cookie-display" id="cookieDisplay"></div>
+
+    <script>
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for(let cookie of cookies) {
+                const [cookieName, cookieValue] = cookie.split('=');
+                if(cookieName.trim() === name) {
+                    return cookieValue;
+                }
+            }
+            return null;
+        }
+        
+        function displayCookies() {
+            let visitCount = localStorage.getItem('visits') || 0;
+            visitCount = parseInt(visitCount) + 1;
+            localStorage.setItem('visits', visitCount);
+            const displayDiv = document.getElementById('cookieDisplay');
+            const name = getCookie('name');
+            const gender = getCookie('gender');
+            const color = getCookie('color');
+            visitCount++;
+
+            displayDiv.innerHTML = `
+                <div class="cookie-item">Name: <span style="color: ${color}">${name}</span></div>
+                <div class="cookie-item">Gender:  ${gender === 'male' ? '<img src="1.jpg" height="50" width="50">' : '<img src="2.jpg" height="50" width="50"  margin="20"  padding="20">'}</div> 
+                <div class="cookie-item">Number of Visits: ${visitCount}</div>
+            `;
+        }
+        window.onload = displayCookies;
+        // // الخطوة الأولى: محاولة جلب القيمة
+        // let visitCount = localStorage.getItem('visits'); // سيكون null في أول زيارة
+
+        // الخطوة الثانية: التحقق من وجود القيمة
+       // visitCount = visitCount || 0; // إذا كانت null سيأخذ القيمة 0
+
+       // الخطوة الثالثة: إنشاء أو تحديث المفتاح في localStorage
+       // localStorage.setItem('visits', visitCount + 1);
+    </script>
+</body>
+</html>

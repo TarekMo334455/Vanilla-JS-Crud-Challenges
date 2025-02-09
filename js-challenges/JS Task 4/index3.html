@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Photo Gallery</title>
+    <style>
+        :root {
+            --gallery-gap: 15px;
+            --image-border: #333;
+            --hover-shadow: rgba(0,0,0,0.2);
+            --transition-time: 0.3s;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--gallery-gap);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid var(--image-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-time) ease;
+            backface-visibility: hidden;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px var(--hover-shadow);
+        }
+
+        .gallery img.fade {
+            opacity: 0.6;
+        }
+
+        .gallery img.error {
+            border-color: #ff0000;
+        }
+
+        @media (max-width: 600px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery" id="gallery">
+        <img src="images/1.jpg" alt="Image 1" loading="lazy">
+        <img src="images/2.jpg" alt="Image 2" loading="lazy">
+        <img src="images/3.jpg" alt="Image 3" loading="lazy">
+        <img src="images/4.jpg" alt="Image 4" loading="lazy">
+    </div>
+
+    <script>
+        // Constants
+        const FADE_INTERVAL = 50;
+        const OPACITY_STEP = 0.05;
+
+        // Utility functions
+        function fadeElement(element, targetOpacity) {
+            let currentOpacity = parseFloat(element.style.opacity) || 1;
+            const step = currentOpacity > targetOpacity ? -OPACITY_STEP : OPACITY_STEP;
+            
+            clearInterval(element.fadeInterval);
+            
+            element.fadeInterval = setInterval(() => {
+                currentOpacity += step;
+                
+                if ((step < 0 && currentOpacity <= targetOpacity) || 
+                    (step > 0 && currentOpacity >= targetOpacity)) {
+                    currentOpacity = targetOpacity;
+                    clearInterval(element.fadeInterval);
+                }
+                
+                element.style.opacity = currentOpacity;
+            }, FADE_INTERVAL);
+        }
+
+        function handleImageError(img) {
+            img.classList.add('error');
+            img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23ff0000" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/%3E%3C/svg%3E';
+        }
+
+        // Event handlers
+        function initializeGallery() {
+            const images = document.querySelectorAll('.gallery img');
+            
+            images.forEach(img => {
+                // Mouse events
+                img.addEventListener('mouseover', () => fadeElement(img, 0.6));
+                img.addEventListener('mouseout', () => fadeElement(img, 1));
+                
+                // Error handling
+                img.addEventListener('error', () => handleImageError(img));
+                
+                // Click handling
+                img.addEventListener('click', () => {
+                    img.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        img.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeGallery);
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style>
+    .form-container {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    input.invalid {
+      border-color: #dc3545;
+      background-color: #fff;
+    }
+
+    input.valid {
+      border-color: #28a745;
+      background-color: #fff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <form id="registrationForm" action="thankyou.html" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+        <span id="nameError" class="error-message">Name must be at least 4 characters</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <span id="passwordRequirements" class="error-message">
+          Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="repeatPassword">Repeat Password</label>
+        <input type="password" id="repeatPassword" name="repeatPassword" required>
+        <span id="passwordError" class="error-message">Passwords do not match</span>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="terms" name="terms" required>
+          I accept the terms and conditions
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    class FormValidator {
+      constructor(formId) {
+        this.form = document.getElementById(formId);
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+        const fullName = this.form.querySelector('#fullName');
+        const password = this.form.querySelector('#password');
+        const repeatPassword = this.form.querySelector('#repeatPassword');
+
+        fullName.addEventListener('blur', () => this.validateFullName());
+        fullName.addEventListener('focus', () => this.hideError('nameError'));
+
+        password.addEventListener('input', () => this.validatePassword());
+        repeatPassword.addEventListener('input', () => this.validatePasswords());
+      }
+
+      validateFullName() {
+        const fullName = this.form.querySelector('#fullName');
+        const nameValue = fullName.value.trim();
+
+        if (nameValue.length < 4) {
+          this.showError(fullName, 'nameError');
+          return false;
+        }
+
+        this.showSuccess(fullName);
+        return true;
+      }
+
+      validatePassword() {
+        const password = this.form.querySelector('#password');
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+        if (!passwordRegex.test(password.value)) {
+          this.showError(password, 'passwordRequirements');
+          return false;
+        }
+
+        this.showSuccess(password);
+        return true;
+      }
+
+      validatePasswords() {
+        const password = this.form.querySelector('#password');
+        const repeatPassword = this.form.querySelector('#repeatPassword');
+
+        if (password.value !== repeatPassword.value) {
+          this.showError(repeatPassword, 'passwordError');
+          return false;
+        }
+
+        this.showSuccess(repeatPassword);
+        return true;
+      }
+
+      showError(input, errorId) {
+        input.classList.add('invalid');
+        input.classList.remove('valid');
+        document.getElementById(errorId).style.display = 'block';
+      }
+
+      showSuccess(input) {
+        input.classList.remove('invalid');
+        input.classList.add('valid');
+        const errorSpans = input.parentElement.querySelectorAll('.error-message');
+        errorSpans.forEach(span => span.style.display = 'none');
+      }
+
+      hideError(errorId) {
+        document.getElementById(errorId).style.display = 'none';
+      }
+
+      handleSubmit(e) {
+        e.preventDefault();
+
+        const isNameValid = this.validateFullName();
+        const isPasswordValid = this.validatePassword();
+        const arePasswordsMatching = this.validatePasswords();
+        const termsAccepted = this.form.querySelector('#terms').checked;
+
+        if (isNameValid && isPasswordValid && arePasswordsMatching && termsAccepted) {
+          this.form.submit();
+        }
+      }
+    }
+
+    // Initialize form validation
+    new FormValidator('registrationForm');
+  </script>
+</body>
+
+</html>

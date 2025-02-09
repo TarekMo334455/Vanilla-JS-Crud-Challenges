@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies Lab</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        label img {
+            margin-right: 10px;
+            width: 100px;
+            height: 100px;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width:50%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <div id="form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+        <label id="gender"> Select Your Gender:
+            <input type="radio" name="gender" value="male" required>
+            <img src="1.jpg" alt="Male" width="30">
+            <input type="radio" name="gender" value="female" required>
+            <img src="2.jpg" alt="Male" width="30">
+        </label>
+        <label for="color">Favorite Color:</label>
+        <select id="color" name="color" required>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="yellow">Yellow</option>
+        </select>
+        <a href="index2.html">
+            <button id="submit">Submit</button>
+        </a>
+    </div>
+    
+    
+    
+    <script>
+        document.getElementById("submit").addEventListener("click", function() {
+            let name = document.getElementById("name").value;
+            let typeOfGender;
+            function getSelectedGender() {
+                const genderInputs = document.querySelectorAll('input[name="gender"]');
+                genderInputs.forEach(input => {
+                    if (input.checked) {
+                        const selectedInput = input.value;
+                        typeOfGender = selectedInput;
+                    }
+                });
+            }
+            getSelectedGender();
+            let colorSelect = document.getElementById("color");
+            let colorSelected = colorSelect.options[colorSelect.selectedIndex].value;
+
+            document.cookie = `name=${name}; expires=Fri, 31 Dec 2025 23:59:59 GMT`;
+            document.cookie = `gender=${typeOfGender}; expires=Fri, 31 Dec 2025 23:59:59 GMT`; 
+            document.cookie = `color=${colorSelected}; expires=Fri, 31 Dec 2025 23:59:59 GMT`;
+            
+            
+        });
+    </script>
+    <script src="index.js"></script>
+  
+    
+    
+</body>
+</html>

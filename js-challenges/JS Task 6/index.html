@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Task 6</title>
+</head>
+<body>
+    
+    <div class="dropdowns">
+        <select id="bandSelect" onchange="populateArtistDropdown(this.value)">
+            <option value="">Select a band</option>
+        </select>
+        <select id="artistSelect" onchange="handleArtistSelection()">
+            <option value="">Select an artist</option>
+        </select>
+    </div>
+    <script>
+        let bandData = []; 
+        let currentBands = []; 
+        let memberDetails = []; 
+    
+        function loadBandData() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'rockbands.json');
+            xhr.send();
+            xhr.addEventListener('readystatechange', function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.response);
+                    bandData = data;
+                    currentBands = Object.keys(data);
+                    populateBandDropdown(); // Populate first dropdown after data loads
+                }
+            });
+        }
+    
+        function populateBandDropdown() {
+            const bandSelect = document.getElementById('bandSelect');
+            bandSelect.innerHTML = '<option value="">Select a band</option>';
+            currentBands.forEach(band => {
+                bandSelect.innerHTML += `<option value="${band}">${band}</option>`;
+            });
+        }
+    
+        function populateArtistDropdown(selectedBand) {
+            const artistSelect = document.getElementById('artistSelect');
+            artistSelect.innerHTML = '<option value="">Select an artist</option>';
+            
+            if (selectedBand) {
+                bandData[selectedBand].forEach(member => {
+                    artistSelect.innerHTML += `<option value="${member.value}">${member.name}</option>`;
+                });
+            }
+        }
+    
+        function handleArtistSelection() {
+            const artistSelect = document.getElementById('artistSelect');
+            const selectedValue = artistSelect.value;
+            if (selectedValue) {
+                window.open(selectedValue, '_blank');
+            }
+        }
+    
+        window.addEventListener('load', loadBandData);
+    </script>
+</body>
+</html>
