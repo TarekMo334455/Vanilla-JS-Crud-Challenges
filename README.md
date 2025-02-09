@@ -42,8 +42,7 @@ This repository contains a **CRUD application for product management** and a col
 3. Open `index.html` in your browser and explore the features.
 
 ## 🚀 Live Demo
-Check out the live demo of the CRUD app and challenges: **[Live Demo Link]([https://your-live-demo-link.com](https://tarekmo334455.github.io/Vanilla-JS-Cruds-Challenges/
-))**
+Check out the live demo of the CRUD app and challenges: **[Live Demo Link]([ https://tarekmo334455.github.io/Vanilla-JS-Cruds-Challenges/])**
 
 ## 🤝 Contribution
 Contributions are welcome! If you want to improve the CRUD system, add new JavaScript challenges, or optimize the existing code, follow these steps:
