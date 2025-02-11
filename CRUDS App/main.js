@@ -75,7 +75,7 @@ function readProducts() {
     let tableContent = '';
     for (let i = 0; i < productsInfo.length; i++) {
         tableContent += `<tr>
-                    <td>${i}</td>
+                    <td>${i+1}</td>
                     <td>${productsInfo[i].title}</td>
                     <td>${productsInfo[i].price}</td>
                     <td>${productsInfo[i].taxes}</td>
