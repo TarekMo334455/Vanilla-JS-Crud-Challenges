@@ -235,10 +235,10 @@ function validation() {
         return false; 
     }
     if (
-      price.value <= 0 ||
-      ads.value < 0 ||
-      taxes.value < 0 ||
-      discount.value < 0
+      parseFloat(price.value) <= 0 ||
+      parseFloat(ads.value) < 0 ||
+      parseFloat(taxes.value) < 0 ||
+      parseFloat(discount.value) < 0
     ) {
         return false;
     }
